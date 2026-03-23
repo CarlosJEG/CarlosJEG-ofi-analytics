@@ -16,8 +16,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+BASE_DIR = Path(__file__).resolve().parent
+DEFAULT_DATA_FILE = BASE_DIR / "datos.csv"
 APP_TITLE = os.getenv("APP_TITLE", "Dashboard de Seguimiento")
-DATA_FILE = os.getenv("DATA_FILE", "").strip()
+DATA_FILE = os.getenv("DATA_FILE", str(DEFAULT_DATA_FILE)).strip()
 DATA_FORMAT = os.getenv("DATA_FORMAT", "csv")
 
 st.set_page_config(page_title=APP_TITLE, layout="wide")
@@ -46,7 +48,6 @@ def format_percent_table(df: pd.DataFrame, dimension: str) -> pd.DataFrame:
 def resolve_dataset() -> tuple[pd.DataFrame, object, str]:
     st.sidebar.header("Fuente de datos")
 
-    dataset_mode = "Archivo configurado"
     if DATA_FILE:
         st.sidebar.caption(f"Ruta configurada: `{DATA_FILE}`")
     else:
@@ -62,11 +63,6 @@ def resolve_dataset() -> tuple[pd.DataFrame, object, str]:
         file_bytes = uploaded_file.getvalue()
         df, quality = prepare_uploaded_dataset(uploaded_file.name, file_bytes)
         return df, quality, f"Archivo subido: {uploaded_file.name}"
-
-    if not DATA_FILE:
-        raise FileNotFoundError(
-            "No hay `DATA_FILE` configurado. Define esa variable o sube un archivo desde la barra lateral."
-        )
 
     df, quality = prepare_dataset()
     return df, quality, f"Archivo configurado: {Path(DATA_FILE).name}"

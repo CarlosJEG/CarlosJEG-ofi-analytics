@@ -4,11 +4,12 @@ Aplicacion en Streamlit para limpiar `datos.csv` o `datos.xlsx` y visualizar KPI
 
 ## Repo minimo
 
-El repositorio debe contener solo codigo y configuracion:
+El repositorio debe contener:
 
 - `app.py`
 - `dashboard/`
 - `requirements.txt`
+- `datos.csv`
 - `.env.example`
 - `.gitignore`
 - `README.md`
@@ -17,9 +18,8 @@ No subas al repo:
 
 - `.env`
 - `.venv/`
-- `datos.csv`
 - `datos.xlsx`
-- cualquier otro archivo con datos reales
+- cualquier dato adicional que no sea necesario para el dashboard
 
 ## Puesta en marcha local
 
@@ -34,11 +34,11 @@ streamlit run app.py
 
 La aplicacion lee variables desde `.env`.
 
-- `DATA_FILE`: ruta del archivo fuente, opcional si cargaras el archivo manualmente
+- `DATA_FILE`: ruta del archivo fuente, por defecto `datos.csv`
 - `DATA_FORMAT`: `csv` o `xlsx`
 - `APP_TITLE`: titulo del dashboard
 
-Si `DATA_FILE` no esta configurado, la app permite subir el archivo desde la barra lateral.
+Si `datos.csv` existe en la raiz del proyecto, la app lo carga automaticamente. La carga manual desde la barra lateral queda disponible como alternativa.
 
 ## KPIs incluidos
 
@@ -62,15 +62,15 @@ Si `DATA_FILE` no esta configurado, la app permite subir el archivo desde la bar
 
 ## Deploy en Streamlit Community Cloud
 
-1. Sube este proyecto a GitHub sin los datos reales.
+1. Sube este proyecto a un repositorio GitHub privado incluyendo `datos.csv`.
 2. En Streamlit Community Cloud crea una app apuntando a `app.py`.
-3. En `Advanced settings` define variables de entorno si usaras `DATA_FILE`.
-4. Si no tendras un archivo persistente en el servidor, usa la carga manual desde la barra lateral.
+3. No necesitas definir `DATA_FILE` si mantendras `datos.csv` en la raiz del repo.
+4. Usa `Advanced settings` solo si luego cambias la ubicacion del archivo o el titulo de la app.
 5. Verifica que la app cargue, que los filtros funcionen y que los totales coincidan con tu validacion local.
 
 ## Datos a tener en cuenta para produccion
 
 - El dataset contiene campos sensibles como nombre y RUT.
-- Si la app sera interna, evita publicar archivos reales en GitHub o enlaces publicos.
-- Define quien actualiza el archivo y con que frecuencia.
+- Como `datos.csv` ira en el repo, el repositorio debe ser privado.
+- Define quien actualiza `datos.csv` y con que frecuencia.
 - Valida siempre estructura de columnas antes de reemplazar el dataset en produccion.

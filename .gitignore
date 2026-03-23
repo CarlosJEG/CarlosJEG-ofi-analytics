@@ -2,7 +2,4 @@
 __pycache__/
 .pytest_cache/
 .env
-datos.csv
 datos.xlsx
-*.csv
-*.xlsx
